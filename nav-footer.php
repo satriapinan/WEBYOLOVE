@@ -7,6 +7,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
 		<title>Home</title>
+
+		<!-- Logo Title -->
+		<!-- Alt: https://i.postimg.cc/fLSGLvgc/logo-Yolove.png -->
+		<link rel="icon" href="https://i.postimg.cc/13BpbhBT/logo.png">
 		<!-- Icon -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<!-- CSS -->
@@ -16,7 +20,7 @@
 		<header>
 			<nav class="navbar navbar-expand-lg navbar-light bg-primary">
 				<div class="container-sm container-md container-lg container-xl container-xxl">
-					<a class="navbar-brand" href="#">
+					<a class="navbar-brand me-3" href="index.php">
 						<img src="img/logo.png" alt="logo yolove" width="100">
 					</a>
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,8 +28,8 @@
 					</button>
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-							<li class="nav-item mx-2">
-								<a class="nav-link active fw-semibold" aria-current="page" href="#">Home</a>
+							<li class="nav-item me-2">
+								<a class="nav-link active fw-semibold" aria-current="page" href="index.php">Home</a>
 							</li>
 							<li class="nav-item me-2">
 								<a class="nav-link" href="#">Product</a>
@@ -34,10 +38,10 @@
 								<a class="nav-link" href="#">About</a>
 							</li>
 						</ul>
-						<form class="w-100 me-4">
+						<form class="w-100 me-4 mb-3 mb-lg-0">
 							<div class="input-group">
-								<button type="submit" class="input-group-text text-black-50" id="search">
-									<i class="fa fa-search"></i>
+								<button name="submitSearch" type="submit" class="input-group-text text-black-50" id="search">
+								<i class="fa fa-search"></i>
 								</button>
 								<input name="search" class="form-control" type="search" placeholder="Search product.." aria-label="Search" aria-describedby="search">
 							</div>
