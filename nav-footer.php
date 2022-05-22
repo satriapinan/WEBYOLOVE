@@ -17,7 +17,7 @@
 		<link rel="stylesheet" type="text/css" href="style/style.css">
 	</head>
 	<body>
-		<header>
+		<header class="container-fluid bg-primary mb-5">
 			<nav class="navbar navbar-expand-lg navbar-light bg-primary">
 				<div class="container-sm container-md container-lg container-xl container-xxl">
 					<a class="navbar-brand me-3" href="index.php">
@@ -32,7 +32,7 @@
 								<a class="nav-link active fw-semibold" aria-current="page" href="index.php">Home</a>
 							</li>
 							<li class="nav-item me-2">
-								<a class="nav-link" href="#">Product</a>
+								<a class="nav-link" href="product.php">Product</a>
 							</li>
 							<li class="nav-item me-3">
 								<a class="nav-link" href="#">About</a>
@@ -54,7 +54,7 @@
 				</div>
 			</nav>
 		</header>
-		<footer class="container-fluid py-4 fixed-bottom bg-primary">
+		<footer class="container-fluid py-4 bg-primary mt-5">
 			<div class="d-flex justify-content-center">
 				<a href="" class="me-3 text-secondary text-decoration-none fw-semibold">
 					<i class="fa fa-instagram me-1"></i>buketby_yolove
