@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 include("config.php");
 $query = "SELECT * FROM produk";
 $produk = mysqli_query($conn, $query);

@@ -47,10 +47,25 @@
 						<input name="search" class="form-control" type="search" placeholder="Cari produk yang kamu inginkan.." aria-label="Search" aria-describedby="search">
 					</div>
 				</form>
-				<div class="d-flex">
-					<a href="login.php" class="btn btn-outline-light me-2">Masuk</a>
-					<a href="registrasi.php" class="btn btn-light">Daftar</a>
-				</div>
+				<?php
+					if(isset($_SESSION['username'])) {
+						$username = $_SESSION['username'];
+						echo "<div class='dropdown'>
+						          <a class='nav-link dropdown-toggle' id='user' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false'>" . $username . "</a>
+						          <ul class='dropdown-menu dropdown-menu-end' aria-labelledby='user'>
+						              <li><a class='dropdown-item' href='profile.php'>Profil</a></li>
+						              <li><a class='dropdown-item' href='status_pesanan.php'>Status Pesanan</a></li>
+						              <li><a class='dropdown-item' href='logout.php'>Logout</a></li>
+						          </ul>
+						      </div>";
+					}else {
+						echo "<div class='d-flex'>
+								<a href='login.php' class='btn btn-outline-light me-2'>Masuk</a>
+								<a href='registrasi.php' class='btn btn-light'>Daftar</a>
+							  </div>";
+					}
+				?>
+				
 			</div>
 		</div>
 	</nav>

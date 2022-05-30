@@ -1,3 +1,27 @@
+<?php
+
+include("config.php");
+
+if(isset($_POST['registrasi']))
+{
+    $username = $_POST['username'];
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $password_md5 = md5($password);
+
+    $query = "INSERT INTO customer 
+    (username, nama_customer, email_customer, password_customer) 
+    VALUES ('$username', '$name', '$email', '$password_md5')";
+
+    mysqli_query($conn, $query);
+    mysqli_close($conn);
+
+    header("Location: index.php");
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -24,39 +48,33 @@
 		include "navbar.php";
 		?>
 
-		<div class="container-sm container-md container-lg container-xl container-xxl">
+		<div class="container-sm container-md container-lg container-xl container-xxl pb-5">
 			<div class="row m-sm-5">
 				<div class="col-lg-6">
 					<main class="form-registration w-100">
-						<form action="" method="">
+						<form action="registrasi.php" method="POST">
 							<div class="text">
 								<h1 class="h3 mt-5 mb-1 fw-normal">Selamat Datang!</h1>
 								<h6 class="mb-3">Daftar akun terlebih dahulu untuk memulai belanja</h6>
 							</div>
 							<div class="form-floating mb-3">
-								<input type="username" name="username" class="form-control" id="username" placeholder="username" >
+								<input type="text" name="username" class="form-control" id="username" placeholder="username" required>
 								<label for="username">Username</label>
 							</div>
 							<div class="form-floating mb-3">
-								<input type="name" name="name" class="form-control" id="name" placeholder="name">
+								<input type="text" name="name" class="form-control" id="name" placeholder="name" required>
 								<label for="name">Nama lengkap</label>
 							</div>
 							<div class="form-floating mb-3">
-								<input type="telpon" name="telpon" class="form-control" id="telpon" placeholder="telpon" >
-								<label for="telpon">No. Telepon</label>
-							</div>
-							<div class="form-floating mb-3">
-								<input type="email" name="email" class="form-control" id="email" placeholder="email">
+								<input type="email" name="email" class="form-control" id="email" placeholder="email" required>
 								<label for="email">Email</label>
 							</div>
 							<div class="form-floating mb-3">
-								<input type="pasword" name="pasword" class="form-control" id="pasword" placeholder="pasword" >
+								<input type="password" name="password" class="form-control" id="password" placeholder="password" required>
 								<label for="pasword">Password</label>
 							</div>
-							<div class="checkbox mb-3 mt-2">
-							</div>
 							<div class="col-6">
-								<button class="w-100 btn btn-lg btn-primary mb-2" type="submit">Daftar</button>
+								<button name ="registrasi" class="w-100 btn btn-lg btn-primary mb-2" type="submit">Daftar</button>
 							</div>
 							<small class="text-center">Sudah punya akun? Silahkan <a href="login.php" class="text-secondary text-decoration-none fw-semibold">Log in</a> </small>
 						</form>

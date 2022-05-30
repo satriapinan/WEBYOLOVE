@@ -1,3 +1,36 @@
+<?php
+
+session_start();
+
+include("config.php");
+
+if(isset($_POST['login']))
+{
+	$username = $_POST['username'];
+	$password = $_POST['password'];
+	$password_md5 = md5($password);
+
+	if($username != '' && $password != '') {
+		$query = "SELECT * FROM customer WHERE username='$username' AND password_customer='$password_md5'";
+	    $result = mysqli_query($conn, $query);
+		$data = mysqli_fetch_array($result);
+
+		if(mysqli_num_rows($result) < 1) {
+			setcookie("message", "Login tidak berhasil! Username atau Password salah.", time()+60);
+			header('location: index.php');
+		}else {
+			$_SESSION['username'] = $data['username'];
+			$_SESSION['fullname'] = $data['nama_customer'];
+
+			setcookie("message", "", time()+60);
+			header("location: index.php");
+		}
+	}
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -28,21 +61,21 @@
 			<div class="row m-sm-5">
 				<div class="col-md-6">
 					<main class="form-signin w-100 m-auto">
-						<form>
+						<form action="login.php" method="POST">
 							<div class="">
 								<h1 class="h3 mt-5 mb-2 fw-normal">Selamat Datang!</h1>
 								<h6>Login dengan Username</h6>
 							</div>
 							<div class="form-floating mb-3">
-								<input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-								<label for="floatingInput">Username</label>
+								<input name="username" type="text" class="form-control" id="username" placeholder="Username" required>
+								<label for="username">Username</label>
 							</div>
 							<div class="form-floating mb-3">
-								<input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-								<label for="floatingPassword">Password</label>
+								<input name="password" type="password" class="form-control" id="password" placeholder="Password" required>
+								<label for="password">Password</label>
 							</div>
 							<div class="col-6">
-								<button class="w-100 btn btn-lg btn-primary mb-3" type="submit">Log in</button>
+								<button name="login" class="w-50 btn btn-lg btn-primary mb-3" type="submit">Masuk</button>
 							</div>
 							<small class="text-center">Pengguna baru? Buat akun terlebih dahulu <a href="registrasi.php" class="fw-semibold text-secondary text-decoration-none">disini</a> </small>
 						</form>

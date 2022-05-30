@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 include("config.php");
 
 if (!empty($_GET['id_produk'])) {
