@@ -14,11 +14,6 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<!-- CSS -->
 		<link rel="stylesheet" type="text/css" href="style/style.css">
-		<style>
-			* {
-				/*border: 1px solid black;*/
-			}
-		</style>
 	</head>
 	<body>
 		<?php
@@ -29,25 +24,71 @@
 		include "navbar.php";
 		?>
 		<main class="container-sm container-md container-lg container-xl container-xxl">
-			<div class="row justify-content-center pt-5">
-				<div class="col-6 text-center justify-content-center mt-5">
-					<i class="fa fa-user-o fs-1 text-secondary"></i>
-					<h1 class="mb-0 text-center fw-light">Satria Pinandita Abyatarsyah</span></h1>
-					<span class="bg-primary" style="width: 100%; height: 2px; display: inline-block"></span>
-					<div class="row justify-content-center">
-						<div class="col text-start">
-							<h5 class="fw-light">Username</h5>
-							<h5 class="fw-light">Email</h5>
-							<h5 class="fw-light">No. Telepon</h5>
+			<h3 class="text-secondary">Biodata Diri</h3>
+			<div class="row justify-content-between">
+				<div class="col-6">
+					<h6>Lengkapi Biodata</h6>
+					<form action="profile.php" method="POST">
+						<div class="row mb-3">
+							<label for="nama" class="col-sm-3 col-form-label">Nama</label>
+							<div class="col-sm-9">
+								<input name="nama" type="text" class="form-control" id="nama">
+							</div>
 						</div>
-						<div class="col text-start">
-							<h5 class="fw-normal">satriapinan</h5>
-							<h5 class="fw-normal">satriapinan@gmail.com</h5>
-							<h5 class="fw-normal">08333333333</h5>
+						<div class="row mb-3">
+							<label for="username" class="col-sm-3 col-form-label">Username</label>
+							<div class="col-sm-9">
+								<input name="username" type="text" class="form-control" id="username">
+							</div>
 						</div>
-						<div class="col d-flex flex-column justify-content-center">
-							<a class="btn btn-primary mb-1" href="">Edit</a>
-							<a class="btn btn-secondary" href="profile_edit.php">Tambah Alamat</a>
+						<div class="row mb-3">
+							<label for="email" class="col-sm-3 col-form-label">Email</label>
+							<div class="col-sm-9">
+								<input name="email" type="email" class="form-control" id="email">
+							</div>
+						</div>
+						<div class='row mb-3 align-items-center'>
+							<label for="inputGender" class="col-sm-3 col-form-label">Jenis Kelamin</label>
+							<div class="col-sm-9" id="inputGender">
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="gender" id="gender1" value="Laki-laki">
+									<label class="form-check-label" for="gender1">Laki-laki</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="gender" id="gender2" value="Perempuan">
+									<label class="form-check-label" for="gender2">Perempuan</label>
+								</div>
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="tl" class="col-sm-3 col-form-label">Tanggal Lahir</label>
+							<div class="col-sm-9">
+								<input name="tl" type="date" class="form-control" id="tl">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="telp" class="col-sm-3 col-form-label">No. Telepon</label>
+							<div class="col-sm-9">
+								<input name="telp" type="telp" class="form-control" id="telp">
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary">Edit Biodata</button>
+						<a class="btn btn-secondary" href="profile_edit.php">Tambah Alamat</a>
+					</form>
+				</div>
+				<div class="col-5">
+					<div class="card w-100 text-center border rounded py-4">
+						<div>
+							<img src="img/user.png" class="img-fluid w-50 rounded-circle" alt="User Photo">
+						</div>
+						<div class="card-body">
+							<form action="profile.php" method="POST" class="d-flex justify-content-center">
+								<div class="mb-2 mt-3 w-25">
+									<input name="userImg" class="form-control" type="file" id="userImg">
+								</div>
+							</form>
+							<p class="card-text mb-0 text-muted">ukuran gambar: maks 1mb</p>
+							<p class="card-text text text-muted">format gambar: JPEG, PNG</p>
 						</div>
 					</div>
 				</div>

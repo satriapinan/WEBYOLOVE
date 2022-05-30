@@ -14,7 +14,7 @@ $produk = mysqli_query($conn, $query);
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
-		<title>Halaman Utama</title>
+		<title>Beranda</title>
 		<!-- Logo Title -->
 		<!-- Alt: https://i.postimg.cc/fLSGLvgc/logo-Yolove.png -->
 		<link rel="icon" href="https://i.postimg.cc/13BpbhBT/logo.png">

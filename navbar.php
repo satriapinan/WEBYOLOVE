@@ -12,11 +12,11 @@
 					<?php
 					if ($nav1 == 1) {
 						echo "<li class='nav-item me-2'>
-								<a class='nav-link active fw-semibold' href='index.php'>Home</a>
+								<a class='nav-link active fw-semibold' href='index.php'>Beranda</a>
 							  </li>";
 					}else if ($nav1 == 0) {
 						echo "<li class='nav-item me-2'>
-								<a class='nav-link' href='index.php'>Home</a>
+								<a class='nav-link' href='index.php'>Beranda</a>
 							  </li>";
 					}
 					if ($nav2 == 1) {

@@ -64,12 +64,17 @@
 					</form>
 				</div>
 				<div class="col-5">
-					<h3 class="text-secondary">Alamat yang Tersimpan</h3>
-					<a href="">
-						<a href="" class="rounded btn btn-outline-secondary text-start w-100">
-							<h5 class="mb-0">Satria Pinandita Abyatarsyah</h5>
-							<p class="fw-light mb-0">Jl. Tampomas Blok 21 No.2, Indramayu</p>
-						</a>
+					<h3 class="text-secondary mb-3">Alamat yang Tersimpan</h3>
+					<a href="profile_edit.php" class="rounded btn btn-outline-secondary text-start w-100">
+						<div class="d-flex justify-content-between align-items-center">
+							<div>
+								<h5 class="mb-0">Satria Pinandita Abyatarsyah</h5>
+								<p class="fw-light mb-0">Jl. Tampomas Blok 21 No.2, Indramayu</p>
+							</div>
+							<div>
+								<i class="fa fa-pencil-square-o fs-4"></i>
+							</div>
+						</div>
 					</a>
 				</div>
 			</div>
