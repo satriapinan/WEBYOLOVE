@@ -20,7 +20,7 @@ if(isset($_POST['pengiriman']))
     $kode_pos = $_POST['kodepos'];
     $tambahan = $_POST['tambahan'];
 
-    $query = "INSERT INTO detail_pengiriman VALUES ('', '$penerima', '$alamat', '$tel', '$kecamatan', '$kotakab', '$provinsi', '$kode_pos', '$tambahan', '$username')";
+    $query = "INSERT INTO detail_pengiriman VALUES ('', '$penerima', '$tel', '$alamat', '$kecamatan', '$kotakab', '$provinsi', '$kode_pos', '$tambahan', '$username')";
 
     mysqli_query($conn, $query);
     mysqli_close($conn);

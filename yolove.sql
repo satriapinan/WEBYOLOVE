@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 30, 2022 at 08:57 PM
+-- Generation Time: Jun 05, 2022 at 03:11 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.4.16
 
@@ -71,7 +71,9 @@ CREATE TABLE `detail_pengiriman` (
 INSERT INTO `detail_pengiriman` (`id_detail_pengiriman`, `nama_penerima`, `no_telp`, `alamat`, `kecamatan`, `kota`, `provinsi`, `kode_pos`, `tambahan`, `username`) VALUES
 (1, 'Satria Pinandita Abyatarsyah', '0811111111', 'Jl. Tampomas, Indramayu', 'Indramayu', 'Indramayu', 'Jawa Barat', '45211', '', 'satriapinan'),
 (2, 'Budi Domisol', '082222222222', '1234 Main St', 'Isola', 'Bandung', 'Jawa Barat', '45267', 'Pager abu', 'satriapinan'),
-(4, 'Toni Sutono', '087723412098', 'Jl. Rawa Angker No. 3', 'Kayangan', 'Kayangan', 'Kayangan Pusat', '45333', 'Di atas langit', 'satriapinan');
+(4, 'Toni Sutono', '087723412098', 'Jl. Rawa Angker No. 3', 'Kayangan', 'Kayangan', 'Kayangan Pusat', '45333', 'Di atas langit', 'satriapinan'),
+(13, 'sutejo', '0811111111', '1234 Main St', 'Indramayu', 'asdasd', 'Kayangan Pusat', '45267', 'asasd', 'satriapinan'),
+(14, 'sutejo', '0811111111', '1234 Main St', 'Isola', 'asdasd', 'Jawa Barat', '45267', 'Di atas langit', 'satriapinan');
 
 -- --------------------------------------------------------
 
@@ -112,6 +114,15 @@ CREATE TABLE `ekspedisi` (
   `harga_ekspedisi` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `ekspedisi`
+--
+
+INSERT INTO `ekspedisi` (`id_ekspedisi`, `nama_ekspedisi`, `jenis_ekspedisi`, `estimasi_waktu`, `harga_ekspedisi`) VALUES
+(1, 'JNE', 'Reguler', '2-3 hari', 15000),
+(2, 'JNE', 'Same Day', '1 hari', 30000),
+(3, 'JNT', 'Reguler', '2-3 hari', 13000);
+
 -- --------------------------------------------------------
 
 --
@@ -123,6 +134,15 @@ CREATE TABLE `jenis_transaksi` (
   `jenis_pembayaran` varchar(255) NOT NULL,
   `no_rek` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `jenis_transaksi`
+--
+
+INSERT INTO `jenis_transaksi` (`id_jenis_transaksi`, `jenis_pembayaran`, `no_rek`) VALUES
+(1, 'OVO', '087723819230'),
+(2, 'GoPay', '087723819230'),
+(3, 'BNI', '1163612167');
 
 -- --------------------------------------------------------
 
@@ -146,13 +166,22 @@ CREATE TABLE `pesanan` (
   `jumlah_produk` int(11) NOT NULL,
   `total_harga` int(11) NOT NULL,
   `status_pesanan` varchar(255) NOT NULL DEFAULT 'belum bayar',
-  `catatan_pesanan` varchar(255) DEFAULT NULL,
+  `catatan_pesanan` varchar(255) NOT NULL DEFAULT '-',
   `username` varchar(255) NOT NULL,
-  `id_transaksi` int(11) NOT NULL,
-  `id_produk_pilihan` int(11) NOT NULL,
-  `id_ekspedisi` int(11) NOT NULL,
-  `id_detail_pengiriman` int(11) NOT NULL
+  `id_produk` int(11) NOT NULL,
+  `id_detail_produk` int(11) NOT NULL,
+  `id_transaksi` int(11) DEFAULT NULL,
+  `id_ekspedisi` int(11) DEFAULT NULL,
+  `id_detail_pengiriman` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pesanan`
+--
+
+INSERT INTO `pesanan` (`id_pesanan`, `jumlah_produk`, `total_harga`, `status_pesanan`, `catatan_pesanan`, `username`, `id_produk`, `id_detail_produk`, `id_transaksi`, `id_ekspedisi`, `id_detail_pengiriman`) VALUES
+(41, 2, 250000, 'belum bayar', '', 'satriapinan', 1, 7, 9, 2, 1),
+(42, 2, 233000, 'belum bayar', '', 'satriapinan', 1, 8, 10, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -182,26 +211,23 @@ INSERT INTO `produk` (`id_produk`, `nama_produk`, `kategori_produk`, `stok_produ
 -- --------------------------------------------------------
 
 --
--- Table structure for table `produk_pilihan`
---
-
-CREATE TABLE `produk_pilihan` (
-  `id_produk_pilihan` int(11) NOT NULL,
-  `id_detail_produk` int(11) NOT NULL,
-  `id_produk` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `transaksi`
 --
 
 CREATE TABLE `transaksi` (
   `id_transaksi` int(11) NOT NULL,
-  `bukti_pembayaran` varchar(255) NOT NULL,
-  `id_jenis_transaksi` int(11) NOT NULL
+  `bukti_pembayaran` varchar(255) DEFAULT NULL,
+  `id_jenis_transaksi` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `transaksi`
+--
+
+INSERT INTO `transaksi` (`id_transaksi`, `bukti_pembayaran`, `id_jenis_transaksi`, `username`) VALUES
+(9, NULL, 3, 'satriapinan'),
+(10, NULL, 3, 'satriapinan');
 
 --
 -- Indexes for dumped tables
@@ -253,8 +279,9 @@ ALTER TABLE `pesanan`
   ADD KEY `id_transaksi` (`id_transaksi`),
   ADD KEY `username` (`username`),
   ADD KEY `id_ekspedisi` (`id_ekspedisi`),
-  ADD KEY `id_produk_pilihan` (`id_produk_pilihan`),
-  ADD KEY `id_detail_pengiriman` (`id_detail_pengiriman`);
+  ADD KEY `id_detail_pengiriman` (`id_detail_pengiriman`),
+  ADD KEY `id_produk` (`id_produk`),
+  ADD KEY `id_detail_produk` (`id_detail_produk`);
 
 --
 -- Indexes for table `produk`
@@ -263,19 +290,12 @@ ALTER TABLE `produk`
   ADD PRIMARY KEY (`id_produk`);
 
 --
--- Indexes for table `produk_pilihan`
---
-ALTER TABLE `produk_pilihan`
-  ADD PRIMARY KEY (`id_produk_pilihan`),
-  ADD KEY `id_detail_produk` (`id_detail_produk`),
-  ADD KEY `id_produk` (`id_produk`);
-
---
 -- Indexes for table `transaksi`
 --
 ALTER TABLE `transaksi`
   ADD PRIMARY KEY (`id_transaksi`),
-  ADD KEY `id_jenis_transaksi` (`id_jenis_transaksi`);
+  ADD KEY `id_jenis_transaksi` (`id_jenis_transaksi`),
+  ADD KEY `username` (`username`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -285,7 +305,7 @@ ALTER TABLE `transaksi`
 -- AUTO_INCREMENT for table `detail_pengiriman`
 --
 ALTER TABLE `detail_pengiriman`
-  MODIFY `id_detail_pengiriman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_detail_pengiriman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `detail_produk`
@@ -297,19 +317,19 @@ ALTER TABLE `detail_produk`
 -- AUTO_INCREMENT for table `ekspedisi`
 --
 ALTER TABLE `ekspedisi`
-  MODIFY `id_ekspedisi` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_ekspedisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `jenis_transaksi`
 --
 ALTER TABLE `jenis_transaksi`
-  MODIFY `id_jenis_transaksi` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_jenis_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id_pesanan` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `produk`
@@ -318,16 +338,10 @@ ALTER TABLE `produk`
   MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `produk_pilihan`
---
-ALTER TABLE `produk_pilihan`
-  MODIFY `id_produk_pilihan` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
@@ -352,21 +366,16 @@ ALTER TABLE `pesanan`
   ADD CONSTRAINT `pesanan_ibfk_3` FOREIGN KEY (`id_transaksi`) REFERENCES `transaksi` (`id_transaksi`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `pesanan_ibfk_4` FOREIGN KEY (`username`) REFERENCES `customer` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `pesanan_ibfk_5` FOREIGN KEY (`id_ekspedisi`) REFERENCES `ekspedisi` (`id_ekspedisi`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pesanan_ibfk_6` FOREIGN KEY (`id_produk_pilihan`) REFERENCES `produk_pilihan` (`id_produk_pilihan`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pesanan_ibfk_7` FOREIGN KEY (`id_detail_pengiriman`) REFERENCES `detail_pengiriman` (`id_detail_pengiriman`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `produk_pilihan`
---
-ALTER TABLE `produk_pilihan`
-  ADD CONSTRAINT `produk_pilihan_ibfk_1` FOREIGN KEY (`id_detail_produk`) REFERENCES `detail_produk` (`id_detail_produk`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `produk_pilihan_ibfk_2` FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id_produk`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `pesanan_ibfk_7` FOREIGN KEY (`id_detail_pengiriman`) REFERENCES `detail_pengiriman` (`id_detail_pengiriman`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `pesanan_ibfk_8` FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id_produk`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `pesanan_ibfk_9` FOREIGN KEY (`id_detail_produk`) REFERENCES `detail_produk` (`id_detail_produk`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  ADD CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_jenis_transaksi`) REFERENCES `jenis_transaksi` (`id_jenis_transaksi`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_jenis_transaksi`) REFERENCES `jenis_transaksi` (`id_jenis_transaksi`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `transaksi_ibfk_2` FOREIGN KEY (`username`) REFERENCES `customer` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -4,8 +4,11 @@ session_start();
 
 include("config.php");
 
-if (!empty($_GET['id_produk'])) {
-	$id = $_GET['id_produk'];
+if ((!empty($_GET['id_produk'])) || (isset($_SESSION['produk_pilihan']))) {
+	if (!empty($_GET['id_produk'])) {
+		$_SESSION['produk_pilihan'] = $_GET['id_produk'];
+	}
+	$id = $_SESSION['produk_pilihan'];
 
 	$query = "SELECT * FROM produk WHERE id_produk=$id";
 	$produk = mysqli_query($conn, $query);
@@ -14,6 +17,31 @@ if (!empty($_GET['id_produk'])) {
 	$query = "SELECT * FROM detail_produk WHERE id_produk=$id";
 	$detail_produk = mysqli_query($conn, $query);
 	$detail_produk2 = mysqli_query($conn, $query);
+}
+
+if (isset($_POST['submitOrder'])) {
+	if (isset($_SESSION['username'])) {
+		$jumlah  = $_POST['amount'];
+		$note  = $_POST['note'];
+		$username = $_SESSION['username'];
+		$produk_pilihan = $_SESSION['produk_pilihan'];
+		$detail_pilihan = $_POST['selectedDetail'];
+
+		$query = "SELECT * FROM detail_produk WHERE id_detail_produk=$detail_pilihan";
+		$result = mysqli_query($conn, $query);
+		$detail_produk_pilihan = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		
+		$harga = ($row['harga_produk'] + $detail_produk_pilihan['harga_detail']) * $jumlah;
+		
+		$query = "INSERT INTO pesanan (id_pesanan, jumlah_produk, total_harga, catatan_pesanan, username, id_produk, id_detail_produk) VALUES ('', '$jumlah', '$harga', '$note', '$username', '$produk_pilihan', '$detail_pilihan')";
+		$result = mysqli_query($conn, $query);
+
+		header("location: pembayaran.php");
+	} else {
+		$_SESSION['error'] = "login first";
+		header("location: login.php");
+	}
+
 }
 
 ?>
@@ -27,7 +55,7 @@ if (!empty($_GET['id_produk'])) {
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
-		<title>Product Detail</title>
+		<title>Detail Produk</title>
 		<!-- Logo Title -->
 		<!-- Alt: https://i.postimg.cc/fLSGLvgc/logo-Yolove.png -->
 		<link rel="icon" href="https://i.postimg.cc/13BpbhBT/logo.png">
@@ -74,7 +102,7 @@ if (!empty($_GET['id_produk'])) {
 				<div class="col-6">
 					<h2 class="text-secondary"><?php echo "{$row['nama_produk']}"; ?></h2>
 					<h5>Rp <?php echo "{$row['harga_produk']}"; ?>;</h5>
-					<form action="pembayaran.php" method="post">
+					<form action="product_detail.php" method="POST">
 						<div class="form-floating mb-3">
 							<?php
 							echo "<input readonly class='form-control-plaintext' id='description' placeholder='Deskripsi barang' value='{$row['deskripsi_produk']}'>";
@@ -101,7 +129,7 @@ if (!empty($_GET['id_produk'])) {
 							<input name="amount" min="1" type="number" class="form-control" id="amount" placeholder="Banyak barang.." value="1" style="width: 90px;">
 							<label for="floatingInput">Jumlah</label>
 						</div>
-						<button type="submitOrder" class="btn btn-primary w-15">Beli</button>
+						<button name="submitOrder" type="submit" class="btn btn-primary w-15">Beli</button>
 					</form>
 				</div>
 			</div>

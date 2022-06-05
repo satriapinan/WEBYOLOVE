@@ -4,6 +4,47 @@ session_start();
 
 include("config.php");
 
+$username = $_SESSION['username'];
+
+$query = "SELECT * FROM ekspedisi";
+$ekspedisi = mysqli_query($conn, $query);
+
+$id_pesanan = $_SESSION['id_pesanan']; 
+
+$query = "SELECT * FROM pesanan WHERE username='$username' AND id_pesanan='$id_pesanan'";
+$result = mysqli_query($conn, $query);
+$pesanan = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+$id_produk_pesanan = $pesanan['id_produk'];
+
+$query = "SELECT * FROM produk WHERE id_produk='$id_produk_pesanan'";
+$result = mysqli_query($conn, $query);
+$produk_pesanan = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+$id_detail_pesanan = $pesanan['id_detail_produk'];
+
+$query = "SELECT * FROM detail_produk WHERE id_detail_produk='$id_detail_pesanan'";
+$result = mysqli_query($conn, $query);
+$detail_pesanan = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+if(isset($_POST['submitEkspedisi']))
+{
+    $id_ekspedisi = $_POST['ekspedisi'];
+    
+    $query = "SELECT * FROM ekspedisi WHERE id_ekspedisi='$id_ekspedisi'";
+	$result = mysqli_query($conn, $query);
+	$ekspedisi_pesanan = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+	$harga_pesanan = $pesanan['total_harga'];
+	$harga_ekspedisi = $ekspedisi_pesanan['harga_ekspedisi'];
+	$harga_total = $harga_pesanan + $harga_ekspedisi; 
+
+    $query = "UPDATE pesanan SET id_ekspedisi='$id_ekspedisi', total_harga='$harga_total' WHERE id_pesanan='$id_pesanan'";
+    mysqli_query($conn, $query);
+
+    header("Location: pembayaran3.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +55,7 @@ include("config.php");
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
-		<title>Menyelesaikan Pemesanan</title>
+		<title>Menyelesaikan Pemesanan - Ekspedisi</title>
 		
 		<!-- Logo Title -->
 		<!-- Alt: https://i.postimg.cc/fLSGLvgc/logo-Yolove.png -->
@@ -36,7 +77,7 @@ include("config.php");
 
 		<main class="form-registration">
 			<div class="container">
-				<div class="atas">
+				<div class="atas mb-4">
 					<h3 class="satu">Menyelesaikan Pemesanan</h3>
 					<small><h6 class="dua text-primary">Alamat</h6></small>
 					<hr class="tiga">
@@ -45,63 +86,75 @@ include("config.php");
 					<small><h6 class="enam text-primary">Pembayaran</h6></small>
 				</div>
 				<div class="row">
-					<form action="pembayaran3.php" class="col-6">
-						<div class="form-check mt-3 mb-3 px-5 py-3 rounded col-8" style="background-color: #FFFAFA;">
-							<input name="kurir" class="form-check-input" type="checkbox" value="kurir1">
-							<label class="form-check-label" for="ingatAlamat">
-								<span class="fw-semibold text-secondary">JNE Reguler</span>(Rp 15.000,00)<br>
-								2 - 3 hari
-							</label>
-						</div>
-						<div class="form-check mb-3 px-5 py-3 rounded col-8" style="background-color: #FFFAFA;">
-							<input name="kurir" class="form-check-input" type="checkbox" value="kurir2">
-							<label class="form-check-label" for="ingatAlamat">
-								<span class="fw-semibold text-secondary">JNE Same Days</span>(Rp 30.000,00)<br>
-								1 hari
-							</label>
-						</div>
-						<div class="form-check mb-5 px-5 py-3 rounded col-8" style="background-color: #FFFAFA;">
-							<input name="kurir" class="form-check-input" type="checkbox" value="kurir3">
-							<label class="form-check-label" for="ingatAlamat">
-								<span class="fw-semibold text-secondary">JNE Express</span>(Rp 20.000,00)<br>
-								1 - 2 hari
-							</label>
-						</div>
+					<form action="pembayaran2.php" method="POST" class="col-6">
+						<?php
+    					while($pilihanEkspedisi = mysqli_fetch_array($ekspedisi, MYSQLI_ASSOC)) {
+    						echo "<div class='form-check mb-3 px-5 py-3 rounded col-8'
+    						      style='background-color: #FFFAFA;'>
+									<input name='ekspedisi' class='form-check-input'
+									type='radio' value='{$pilihanEkspedisi['id_ekspedisi']}'>
+									<label class='form-check-label'>
+										<span class='fw-semibold text-secondary'>
+										{$pilihanEkspedisi['nama_ekspedisi']} 
+										{$pilihanEkspedisi['jenis_ekspedisi']}
+										</span>(Rp {$pilihanEkspedisi['harga_ekspedisi']};)<br>
+										{$pilihanEkspedisi['estimasi_waktu']}
+									</label>
+								  </div>";
+    					}
+						?>
 						<div class="col-8">
-							<button class="w-100 btn btn-lg btn-primary" type="submit">Pilih Metode Pembayaran</button>
+							<button name="submitEkspedisi" class="w-100 btn btn-lg btn-primary" type="submit">
+								Simpan Pilihan Ekspedisi
+							</button>
 						</div>
 					</form>
 					<div class="col-6">
 						<div class="card mb-3" style="max-width: 540px;">
 							<div class="row g-0">
 								<div class="col-md-4">
-									<div class="w-100 h-100" style="max-width: 200px; min-height: 160px; max-height: 160px;">
-										<img src="img/baloon flower.jpeg" class="w-100 h-100 rounded" alt="...">
+									<div class="w-100 h-100" style="max-width: 200px; min-height: 180px; max-height: 180px;">
+										<?php
+										echo "<img src='img/{$produk_pesanan['gambar']}'
+										      class='w-100 h-100 rounded' alt='gambar pesanan'>";
+										?>
 									</div>
 								</div>
 								<div class="col-md-8">
 									<div class="card-body">
-										<h4 class="card-title mb-1">Baloon Flower</h4>
-										<p class="card-text mb-0"><small class="text-muted">Harga: Rp 100.000;</small></p>
-										<p class="card-text mb-4"><small class="text-muted">Jumlah: 2</small></p>
-										<p class="card-text mb-0"><small class="text-muted">Harga Barang:</small></p>
-										<h5>Rp 200.000;</h5>
+										<?php
+										$sub_harga = $produk_pesanan['harga_produk'] * $pesanan['jumlah_produk'];
+										echo "<h4 class='card-title mb-1'>
+											      {$produk_pesanan['nama_produk']}
+											  </h4>
+											  <p class='card-text mb-0'><small class='text-muted'>
+											      Harga: Rp {$produk_pesanan['harga_produk']};
+											  </small></p>
+											  <p class='card-text mb-0'><small class='text-muted'>
+											      Detail: Rp {$detail_pesanan['harga_detail']};
+											  </small></p>
+											  <p class='card-text mb-4'><small class='text-muted'>
+											      Jumlah: {$pesanan['jumlah_produk']}
+											  </small></p>
+											  <p class='card-text mb-0'><small class='text-muted'>Harga Barang:</small></p>
+											  <h5>Rp ".$sub_harga.";</h5>";
+										?>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="d-flex justify-content-between mb-2">
 							<span>Subtotal</span>
-							<span class="fw-semibold">Rp 200.000;</span>
-						</div>
-						<div class="d-flex justify-content-between">
-							<span>Biaya pengiriman</span>
-							<span class="fw-semibold">Rp 15.000;</span>
+							<?php
+							echo "<span class='fw-semibold'>Rp {$pesanan['total_harga']};</span>";
+							?>
 						</div>
 						<span style="background: #d4d9df; width: 100%; height: 2px; display: inline-block"></span>
 						<div class="d-flex justify-content-between mt-2">
 							<span>Total</span>
-							<span class="fw-semibold">Rp 215.000;</span>
+							<?php
+							echo "<span class='fw-semibold'>Rp {$pesanan['total_harga']};</span>"
+							?>
 						</div>
 					</div>
 				</div>
